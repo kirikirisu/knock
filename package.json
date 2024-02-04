@@ -6,16 +6,19 @@
     "dev": "nodemon --watch ./dist/ --exec node -r dotenv/config dist/main.js",
     "build:w": "tsc -w",
     "build": "tsc -p .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint src/*",
+    "format": "biome format src/* --write"
   },
   "devDependencies": {
-    "@types/node": "^20.11.16",
-    "nodemon": "^3.0.3",
-    "typescript": "^5.2.2"
+    "@biomejs/biome": "1.5.3",
+    "@types/node": "20.11.16",
+    "nodemon": "3.0.3",
+    "typescript": "5.2.2"
   },
   "dependencies": {
-    "@notionhq/client": "^2.2.14",
-    "@slack/bolt": "^3.17.1",
-    "dotenv": "^16.4.1"
+    "@notionhq/client": "2.2.14",
+    "@slack/bolt": "3.17.1",
+    "dotenv": "16.4.1"
   }
 }
