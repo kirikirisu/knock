@@ -1,4 +1,4 @@
-import { App } from "@slack/bolt";
+import { App, AwsLambdaReceiver } from "@slack/bolt";
 import { Client } from "@notionhq/client";
 
 const ParagraphBlock = {
@@ -34,9 +34,13 @@ const ParagraphBlock = {
 };
 
 const notion = new Client({ auth: process.env.NOTION_KEY });
+const awsLambdaReceiver = new AwsLambdaReceiver({
+  signingSecret: process.env.SLACK_SIGNING_SECRET ?? "",
+});
 const slack = new App({
   token: process.env.SLACK_BOT_TOKEN,
-  signingSecret: process.env.SLACK_SIGNING_SECRET,
+  signingSecret: process.env.SLACK_SIGNING_SECRET ?? "",
+  receiver: awsLambdaReceiver,
 });
 
 slack.event("reaction_added", async ({ event, client, logger }) => {
@@ -87,8 +91,8 @@ slack.event("reaction_added", async ({ event, client, logger }) => {
   });
 });
 
-(async () => {
-  await slack.start(process.env.PORT || 3000);
-
-  console.log("slack running");
-})();
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export const handler = async (event: any, context: any, callback: any) => {
+  const handler = await awsLambdaReceiver.start();
+  return handler(event, context, callback);
+};
