@@ -8,7 +8,8 @@
     "build": "tsc -p .",
     "typecheck": "tsc --noEmit",
     "lint": "biome lint src/*",
-    "format": "biome format src/* --write"
+    "format": "biome format src/* --write",
+    "pipe:https": "ngrok http 3000"
   },
   "devDependencies": {
     "@biomejs/biome": "1.5.3",
